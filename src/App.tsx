@@ -106,6 +106,27 @@ const initialImages: SiteImages = {
   }
 };
 
+const unsplashVariant = (source: string, width: number): string | null => {
+  try {
+    const url = new URL(source);
+    if (url.hostname !== "images.unsplash.com") return null;
+    url.searchParams.set("w", String(width));
+    url.searchParams.set("q", "70");
+    url.searchParams.set("auto", "format");
+    url.searchParams.set("fit", "crop");
+    return url.toString();
+  } catch {
+    return null;
+  }
+};
+
+const responsiveImage = (source: string, widths: number[]) => ({
+  src: unsplashVariant(source, widths[Math.min(1, widths.length - 1)]) ?? source,
+  srcSet: unsplashVariant(source, widths[0])
+    ? widths.map(width => `${unsplashVariant(source, width)} ${width}w`).join(", ")
+    : undefined,
+});
+
 const Logo = ({ className = "" }: { className?: string }) => (
   <div className={`flex items-center gap-3 ${className}`}>
     <div className="flex flex-col justify-between h-[28px] w-[32px]">
@@ -560,7 +581,10 @@ export default function App() {
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src={siteImages.hero}
+            {...responsiveImage(siteImages.hero, [480, 800, 1200, 1600])}
+            sizes="100vw"
+            loading="eager"
+            fetchPriority="high"
             alt="Plantação de Eucalipto"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
@@ -681,7 +705,10 @@ export default function App() {
               transition={{ duration: 0.6 }}
             >
               <img
-                src={siteImages.about}
+                {...responsiveImage(siteImages.about, [480, 800, 1200])}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                loading="lazy"
+                decoding="async"
                 alt="Eucalipto Citriodora"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
@@ -833,7 +860,10 @@ export default function App() {
                   </div>
                   <div className="relative aspect-video border-4 border-stone-200 rounded-2xl flex items-center justify-center bg-stone-50 overflow-hidden shadow-xl">
                     <img 
-                      src={siteImages.medicao} 
+                      {...responsiveImage(siteImages.medicao, [480, 800, 1200])}
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      loading="lazy"
+                      decoding="async"
                       alt="Ilustração de Medição" 
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
@@ -904,7 +934,10 @@ export default function App() {
               viewport={{ once: true }}
             >
               <img
-                src={siteImages.sust1}
+                {...responsiveImage(siteImages.sust1, [480, 800, 1200])}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                loading="lazy"
+                decoding="async"
                 alt="Reflorestamento"
                 className="rounded-3xl aspect-[16/10] w-full object-cover shadow-2xl"
                 referrerPolicy="no-referrer"
@@ -974,6 +1007,8 @@ export default function App() {
               >
                 <img
                   src={item.url}
+                  loading="lazy"
+                  decoding="async"
                   alt={`Galeria ${activeGalleryTab} ${idx + 1}`}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   referrerPolicy="no-referrer"
