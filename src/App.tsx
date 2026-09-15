@@ -120,48 +120,6 @@ const Logo = ({ className = "" }: { className?: string }) => (
   </div>
 );
 
-const LoadingScreen = () => (
-  <motion.div
-    initial={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.8, ease: "easeInOut" }}
-    className="fixed inset-0 z-[100] bg-[#183e26] flex flex-col items-center justify-center"
-  >
-    <motion.div
-      initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ 
-        duration: 0.8,
-        repeat: Infinity,
-        repeatType: "reverse"
-      }}
-      className="mb-8"
-    >
-      <Logo className="scale-150" />
-    </motion.div>
-    
-    <div className="w-48 h-1 bg-stone-800 rounded-full overflow-hidden">
-      <motion.div
-        initial={{ x: "-100%" }}
-        animate={{ x: "100%" }}
-        transition={{ 
-          duration: 1.5,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        className="w-full h-full bg-[#A1C913]"
-      />
-    </div>
-    <motion.p
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="mt-4 text-stone-400 font-medium tracking-widest text-[10px] uppercase"
-    >
-      Carregando Qualidade...
-    </motion.p>
-  </motion.div>
-);
-
 const PromotionModal = ({ promo, onClose }: { promo: NonNullable<SiteImages['promotion']>, onClose: () => void }) => {
   if (!promo.active || !promo.url) return null;
 
@@ -494,10 +452,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-stone-800">
       <AnimatePresence>
-        {!isDataLoaded.site && <LoadingScreen />}
-      </AnimatePresence>
-
-      <AnimatePresence>
         {isPromoOpen && siteImages.promotion && (
           <PromotionModal promo={siteImages.promotion} onClose={handleClosePromo} />
         )}
@@ -615,12 +569,7 @@ export default function App() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div
-            className="text-center max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <div className="text-center max-w-3xl mx-auto">
             <span className="inline-block py-1 px-3 rounded-full bg-brand-500/20 text-brand-100 border border-brand-400/30 text-sm font-semibold tracking-wider mb-6 backdrop-blur-sm">
               QUALIDADE E CONFIABILIDADE DESDE 1992
             </span>
@@ -647,31 +596,31 @@ export default function App() {
                 Ver Catálogo
               </button>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Stats Section */}
       <section className="py-12 bg-[#183e26] text-brand-50 relative z-20 -mt-8 mx-4 md:mx-auto max-w-6xl rounded-2xl shadow-2xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-8">
-          <motion.div className="text-center" {...fadeIn}>
+          <div className="text-center">
             <div className="text-4xl font-black mb-2">30+ Anos</div>
             <div className="text-brand-200 font-medium">
               de experiência no mercado
             </div>
-          </motion.div>
-          <motion.div className="text-center" {...fadeIn}>
+          </div>
+          <div className="text-center">
             <div className="text-4xl font-black mb-2">10 Anos</div>
             <div className="text-brand-200 font-medium">
               de garantia nos produtos
             </div>
-          </motion.div>
-          <motion.div className="text-center" {...fadeIn}>
+          </div>
+          <div className="text-center">
             <div className="text-4xl font-black mb-2">100%</div>
             <div className="text-brand-200 font-medium">
               madeira de reflorestamento
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
