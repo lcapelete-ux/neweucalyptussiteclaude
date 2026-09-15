@@ -1,4 +1,3 @@
-import { motion, AnimatePresence } from "motion/react";
 import {
   Leaf,
   ShieldCheck,
@@ -136,7 +135,7 @@ const Logo = ({ className = "" }: { className?: string }) => (
     </div>
     <div className="flex flex-col justify-center">
       <span className="text-[#FDF8E7] font-black text-[22px] leading-[0.85] tracking-wide" style={{ fontFamily: 'Arial, sans-serif' }}>EUCALYPTUS</span>
-      <span className="text-[#A07855] text-[10px] font-normal tracking-[0.45em] leading-none ml-[2px] mt-[3px]" style={{ fontFamily: 'Arial, sans-serif' }}>TRATADOS</span>
+      <span className="text-[#D8B990] text-[10px] font-normal tracking-[0.45em] leading-none ml-[2px] mt-[3px]" style={{ fontFamily: 'Arial, sans-serif' }}>TRATADOS</span>
     </div>
   </div>
 );
@@ -145,18 +144,11 @@ const PromotionModal = ({ promo, onClose }: { promo: NonNullable<SiteImages['pro
   if (!promo.active || !promo.url) return null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <div
       className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
       onClick={onClose}
     >
-      <motion.div
-        initial={{ scale: 0.9, y: 20, opacity: 0 }}
-        animate={{ scale: 1, y: 0, opacity: 1 }}
-        exit={{ scale: 0.9, y: 20, opacity: 0 }}
-        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+      <div
         className="relative max-w-lg w-full bg-white rounded-2xl overflow-hidden shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
@@ -198,8 +190,8 @@ const PromotionModal = ({ promo, onClose }: { promo: NonNullable<SiteImages['pro
             </div>
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 };
 
@@ -459,27 +451,13 @@ export default function App() {
     );
   }
 
-  const fadeIn = {
-    initial: { opacity: 0, y: 20 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.6 },
-  };
-
-  const staggerContainer = {
-    initial: { opacity: 0 },
-    whileInView: { opacity: 1 },
-    viewport: { once: true },
-    transition: { staggerChildren: 0.2 },
-  };
-
   return (
     <div className="min-h-screen bg-stone-50 font-sans text-stone-800">
-      <AnimatePresence>
+      
         {isPromoOpen && siteImages.promotion && (
           <PromotionModal promo={siteImages.promotion} onClose={handleClosePromo} />
         )}
-      </AnimatePresence>
+      
       
       <Toaster position="top-right" />
       {/* Navigation */}
@@ -527,6 +505,8 @@ export default function App() {
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="text-stone-200"
+                aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
+                aria-expanded={isMenuOpen}
               >
                 {isMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -580,6 +560,7 @@ export default function App() {
         )}
       </nav>
 
+      <main id="main-content">
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -612,7 +593,7 @@ export default function App() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="#contato"
-                className="bg-brand-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-brand-400 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                className="bg-brand-500 text-[#183e26] px-8 py-4 rounded-full font-bold text-lg hover:bg-brand-400 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
               >
                 Solicite um Orçamento <ChevronRight className="h-5 w-5" />
               </a>
@@ -655,7 +636,7 @@ export default function App() {
       <section id="citriodora" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div {...fadeIn}>
+            <div>
               <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-6">
                 Por que trabalhamos com{" "}
                 <span className="text-brand-600">Eucalyptus Citriodora</span>?
@@ -676,36 +657,23 @@ export default function App() {
                   "Densidade e resistência mecânica superiores",
                   "Ideal para uso em ambientes externos e rurais",
                 ].map((item, index) => (
-                  <motion.li
+                  <li
                     key={index}
                     className="flex items-center gap-4 p-4 rounded-xl border border-transparent hover:border-brand-100 hover:bg-brand-50/50 transition-colors cursor-default"
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ 
-                      opacity: 1, 
-                      x: 0, 
-                      transition: { type: "spring", stiffness: 100, damping: 15, delay: 0.1 }
-                    }}
-                    viewport={{ once: true, margin: "-20px" }}
-                    whileHover={{ scale: 1.02, x: 5 }}
                   >
-                    <motion.div 
+                    <div 
                       className="bg-brand-100 p-2 rounded-full flex-shrink-0"
-                      whileHover={{ rotate: 15, scale: 1.1 }}
                     >
                       <CheckCircle2 className="h-6 w-6 text-brand-600" />
-                    </motion.div>
+                    </div>
                     <span className="text-stone-700 font-medium text-lg">{item}</span>
-                  </motion.li>
+                  </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
 
-            <motion.div
+            <div
               className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
             >
               <img
                 {...responsiveImage(siteImages.about, [480, 800, 1200])}
@@ -726,7 +694,7 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -734,9 +702,8 @@ export default function App() {
       {/* Treatment Process */}
       <section id="processo" className="py-24 bg-stone-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
+          <div
             className="text-center max-w-3xl mx-auto mb-16"
-            {...fadeIn}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-4">
               Processo de Tratamento em Autoclave
@@ -746,7 +713,7 @@ export default function App() {
               NBR 9480, garantindo máxima proteção contra cupins, fungos e
               umidade.
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -771,14 +738,9 @@ export default function App() {
                 desc: "20 dias de repouso para fixação completa. Eucalipto tratado com 10 anos de garantia, pronto para uso.",
               },
             ].map((step, index) => (
-              <motion.div
+              <div
                 key={index}
                 className="bg-white p-8 rounded-2xl shadow-sm border border-stone-200 hover:shadow-lg transition-shadow relative"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ type: "spring", stiffness: 80, damping: 15, delay: index * 0.15 }}
-                whileHover={{ y: -5, scale: 1.02 }}
               >
                 <div className="absolute -top-5 -left-5 w-10 h-10 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center font-bold text-lg border-4 border-stone-100">
                   {index + 1}
@@ -790,7 +752,7 @@ export default function App() {
                   {step.title}
                 </h3>
                 <p className="text-stone-600">{step.desc}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -814,27 +776,27 @@ export default function App() {
                 </p>
                 <div className="space-y-6">
                   <div className="bg-black/20 p-6 rounded-xl border border-white/10">
-                    <h4 className="text-white font-bold mb-2">
+                    <h3 className="text-white font-bold mb-2">
                       Medição pelo Topo
-                    </h4>
+                    </h3>
                     <p className="text-brand-200 text-sm">
                       Esta é a medida de venda. Sempre medimos pelo diâmetro da
                       ponta mais fina do poste (topo), seguindo a NBR 9480.
                     </p>
                   </div>
                   <div className="bg-black/20 p-6 rounded-xl border border-white/10">
-                    <h4 className="text-white font-bold mb-2">
+                    <h3 className="text-white font-bold mb-2">
                       Variação da Base
-                    </h4>
+                    </h3>
                     <p className="text-brand-200 text-sm">
                       A base é naturalmente mais grossa e varia conforme o
                       crescimento da árvore. Não é usada como medida padrão.
                     </p>
                   </div>
                   <div className="bg-black/20 p-6 rounded-xl border border-white/10">
-                    <h4 className="text-white font-bold mb-2">
+                    <h3 className="text-white font-bold mb-2">
                       Laudos IPT
-                    </h4>
+                    </h3>
                     <p className="text-brand-200 text-sm">
                       Nossos laudos de tratamento são aprovados pelo IPT (Instituto de Pesquisas Tecnológicas), garantindo a eficácia da imunização.
                     </p>
@@ -850,11 +812,8 @@ export default function App() {
                     backgroundSize: "30px 30px",
                   }}
                 ></div>
-                <motion.div
+                <div
                   className="relative z-10 bg-white p-8 rounded-2xl shadow-xl w-full max-w-md"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
                 >
                   <div className="text-center mb-6">
                     <div className="text-sm font-bold text-brand-600 uppercase tracking-wider">
@@ -872,7 +831,7 @@ export default function App() {
                       referrerPolicy="no-referrer"
                     />
                   </div>
-                </motion.div>
+                </div>
               </div>
             </div>
           </div>
@@ -886,7 +845,7 @@ export default function App() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <motion.div {...fadeIn}>
+            <div>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
                 Compromisso Ambiental
               </h2>
@@ -929,12 +888,9 @@ export default function App() {
                   </span>
                 </li>
               </ul>
-            </motion.div>
-            <motion.div
+            </div>
+            <div
               className="w-full"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
             >
               <img
                 {...responsiveImage(siteImages.sust1, [480, 800, 1200])}
@@ -945,7 +901,7 @@ export default function App() {
                 className="rounded-3xl aspect-[16/10] w-full object-cover shadow-2xl"
                 referrerPolicy="no-referrer"
               />
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -965,7 +921,7 @@ export default function App() {
 
           {/* Gallery Tabs Header Hint */}
           <div className="text-center mb-6">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold uppercase tracking-wider">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-[#183e26] text-xs font-semibold uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5 text-brand-600 animate-pulse" /> CLIQUE ABAIXO PARA VER AS FOTOS:
             </span>
           </div>
@@ -985,7 +941,7 @@ export default function App() {
                   onClick={() => setActiveGalleryTab(tab.id as any)}
                   className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm transition-all duration-200 cursor-pointer transform hover:scale-[1.03] active:scale-[0.97] ${
                     isActive
-                      ? "bg-brand-600 text-white shadow-md shadow-brand-600/20"
+                      ? "bg-[#183e26] text-white shadow-md shadow-brand-600/20"
                       : "bg-white text-stone-700 border border-stone-200 hover:bg-stone-100 hover:border-stone-300 hover:text-brand-700"
                   }`}
                 >
@@ -999,14 +955,10 @@ export default function App() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {siteImages.gallery[activeGalleryTab].map((item, idx) => (
-              <motion.div
+            {siteImages.gallery[activeGalleryTab].map((item) => (
+              <div
                 key={item.id}
                 className="relative aspect-square rounded-2xl overflow-hidden shadow-md group"
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
               >
                 <img
                   src={item.url}
@@ -1016,7 +968,7 @@ export default function App() {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
-              </motion.div>
+              </div>
             ))}
             {siteImages.gallery[activeGalleryTab].length === 0 && (
               <div className="col-span-full py-12 text-center text-stone-500">
@@ -1031,7 +983,7 @@ export default function App() {
       <section id="contato" className="py-24 bg-stone-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <motion.div {...fadeIn}>
+            <div>
               <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-6">
                 Solicite seu Orçamento
               </h2>
@@ -1096,13 +1048,10 @@ export default function App() {
                   </div>
                 </a>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
+            <div
               className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-stone-100"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
             >
               <form 
                 className="space-y-6" 
@@ -1208,11 +1157,12 @@ export default function App() {
                   Enviar Mensagem
                 </button>
               </form>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
+      </main>
       {/* Footer */}
       <footer className="bg-[#183e26] text-stone-300 py-12 border-t border-[#143320] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1225,7 +1175,7 @@ export default function App() {
               © 2026 Eucalyptus Tratados. Todos os direitos reservados.
               <button
                 onClick={() => setIsLoginModalOpen(true)}
-                className="opacity-10 hover:opacity-100 transition-opacity p-1"
+                className="opacity-70 hover:opacity-100 transition-opacity p-1" aria-label="Acesso restrito"
                 title="Acesso Restrito"
               >
                 <Lock className="w-4 h-4" />
