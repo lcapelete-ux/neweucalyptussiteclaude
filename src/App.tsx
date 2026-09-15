@@ -182,6 +182,7 @@ const PromotionModal = ({ promo, onClose }: { promo: NonNullable<SiteImages['pro
             <div className="flex gap-3">
               <a
                 href="https://wa.me/5518996354444"
+                onClick={() => { if (typeof window !== "undefined" && (window as any).dataLayer) (window as any).dataLayer.push({ event: "whatsapp_click", source: "promotion" }); }}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 bg-[#A1C913] hover:bg-[#8eb111] text-[#183e26] py-3 rounded-xl font-bold text-center transition-all transform hover:scale-[1.02] active:scale-[0.98]"
@@ -1043,6 +1044,7 @@ export default function App() {
               <div className="space-y-6 mb-10">
                 <a 
                   href="https://wa.me/5515996854945" 
+                  onClick={() => { if (typeof window !== "undefined" && (window as any).dataLayer) (window as any).dataLayer.push({ event: "whatsapp_click", source: "contact_section" }); }}
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 group cursor-pointer"
@@ -1108,7 +1110,7 @@ export default function App() {
                 method="POST"
                 onSubmit={() => {
                   if (typeof window !== 'undefined' && (window as any).dataLayer) {
-                    (window as any).dataLayer.push({ event: 'form_submission', form_name: 'orcamento' });
+                    (window as any).dataLayer.push({ event: 'form_submit_attempt', form_name: 'orcamento' });
                   }
                 }}
               >
