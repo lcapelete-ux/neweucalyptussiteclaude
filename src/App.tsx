@@ -452,7 +452,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 font-sans text-stone-800">
+    <div className="min-h-screen font-sans text-stone-800">
       
         {isPromoOpen && siteImages.promotion && (
           <PromotionModal promo={siteImages.promotion} onClose={handleClosePromo} />
@@ -562,19 +562,21 @@ export default function App() {
 
       <main id="main-content">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            {...responsiveImage(siteImages.hero, [480, 800, 1200, 1600])}
-            sizes="100vw"
-            loading="eager"
-            fetchPriority="high"
-            alt="Plantação de Eucalipto"
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-black/60"></div>
-        </div>
+      <section className="relative min-h-[100svh] pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        {siteImages.hero !== initialImages.hero && (
+          <div className="absolute inset-0 z-0">
+            <img
+              {...responsiveImage(siteImages.hero, [480, 800, 1200, 1600])}
+              sizes="100vw"
+              loading="eager"
+              fetchPriority="high"
+              alt="Plantação de Eucalipto"
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute inset-0 bg-black/60"></div>
+          </div>
+        )}
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
