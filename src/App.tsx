@@ -955,7 +955,7 @@ export default function App() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {siteImages.gallery[activeGalleryTab].map((item) => (
+            {siteImages.gallery[activeGalleryTab].map((item, idx) => (
               <div
                 key={item.id}
                 className="relative aspect-square rounded-2xl overflow-hidden shadow-md group"
