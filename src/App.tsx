@@ -641,7 +641,7 @@ export default function App() {
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-6">
                 Por que trabalhamos com{" "}
-                <span className="text-brand-600">Eucalyptus Citriodora</span>?
+                <span className="text-[#365414]">Eucalyptus Citriodora</span>?
               </h2>
               <p className="text-lg text-stone-600 mb-8">
                 O Eucalyptus Citriodora é reconhecido como a espécie mais
@@ -818,7 +818,7 @@ export default function App() {
                   className="relative z-10 bg-white p-8 rounded-2xl shadow-xl w-full max-w-md"
                 >
                   <div className="text-center mb-6">
-                    <div className="text-sm font-bold text-brand-600 uppercase tracking-wider">
+                    <div className="text-sm font-bold text-[#365414] uppercase tracking-wider">
                       Ilustração de Medição
                     </div>
                   </div>
@@ -1007,7 +1007,7 @@ export default function App() {
                     <Phone className="h-6 w-6" />
                   </div>
                   <div>
-                    <div className="text-sm text-stone-500 font-medium">
+                    <div className="text-sm text-stone-700 font-medium">
                       Telefone / WhatsApp
                     </div>
                     <div className="text-lg font-bold text-stone-900 group-hover:text-brand-600 transition-colors">
@@ -1023,7 +1023,7 @@ export default function App() {
                     <Mail className="h-6 w-6" />
                   </div>
                   <div>
-                    <div className="text-sm text-stone-500 font-medium">
+                    <div className="text-sm text-stone-700 font-medium">
                       Email
                     </div>
                     <div className="text-lg font-bold text-stone-900 group-hover:text-brand-600 transition-colors">
@@ -1041,7 +1041,7 @@ export default function App() {
                     <MapPin className="h-6 w-6" />
                   </div>
                   <div>
-                    <div className="text-sm text-stone-500 font-medium">
+                    <div className="text-sm text-stone-700 font-medium">
                       Endereço
                     </div>
                     <div className="text-lg font-bold text-stone-900 group-hover:text-brand-600 transition-colors">
@@ -1154,7 +1154,7 @@ export default function App() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-brand-500 text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-600 transition-colors shadow-md"
+                  className="w-full bg-brand-500 text-[#183e26] py-4 rounded-xl font-bold text-lg hover:bg-brand-600 transition-colors shadow-md"
                 >
                   Enviar Mensagem
                 </button>
