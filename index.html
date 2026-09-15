@@ -1,12 +1,32 @@
 <!doctype html>
 <html lang="pt-BR">
   <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PL4TFGKB');</script>
+    <!-- Google Tag Manager (adiado para performance) -->
+    <script>
+      // dataLayer disponível desde já: eventos disparados antes do GTM
+      // carregar ficam na fila e são processados quando ele carrega.
+      window.dataLayer = window.dataLayer || [];
+      (function (w, d, s, l, i) {
+        var loaded = false;
+        var events = ['scroll', 'mousemove', 'touchstart', 'keydown', 'click'];
+        function loadGTM() {
+          if (loaded) return;
+          loaded = true;
+          events.forEach(function (e) { w.removeEventListener(e, loadGTM); });
+          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+          var f = d.getElementsByTagName(s)[0],
+              j = d.createElement(s),
+              dl = l != 'dataLayer' ? '&l=' + l : '';
+          j.async = true;
+          j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+          f.parentNode.insertBefore(j, f);
+        }
+        // Carrega no primeiro sinal de interação do usuário...
+        events.forEach(function (e) { w.addEventListener(e, loadGTM, { passive: true }); });
+        // ...ou como garantia, alguns segundos após a página aparecer.
+        w.addEventListener('load', function () { setTimeout(loadGTM, 3500); });
+      })(window, document, 'script', 'dataLayer', 'GTM-PL4TFGKB');
+    </script>
     <!-- End Google Tag Manager -->
     <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
     <style>
