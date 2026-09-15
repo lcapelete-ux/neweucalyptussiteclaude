@@ -34,8 +34,9 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          # Publishable browser key: access is still constrained by Supabase RLS.
+          VITE_SUPABASE_URL: https://ycnxgshttjdlsyabhcks.supabase.co
+          VITE_SUPABASE_ANON_KEY: sb_publishable_kVKaVh057S4L1WNk1J5bxQ_s1NVFFyf
 
       - name: Exclude private quote artifact
         run: rm -rf dist/cercas
