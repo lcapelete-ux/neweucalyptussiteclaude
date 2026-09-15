@@ -18,10 +18,10 @@ import {
   Sprout,
   Sparkles,
 } from "lucide-react";
-import { useState, useEffect } from "react";
-import AdminDashboard from "./components/AdminDashboard";
-import AdminLoginModal from "./components/AdminLoginModal";
-import CatalogModal from "./components/CatalogModal";
+import { useState, useEffect, lazy, Suspense } from "react";
+const AdminDashboard = lazy(() => import("./components/AdminDashboard"));
+const AdminLoginModal = lazy(() => import("./components/AdminLoginModal"));
+const CatalogModal = lazy(() => import("./components/CatalogModal"));
 import { supabase } from "./supabase";
 
 import { Toaster, toast } from "react-hot-toast";
@@ -444,14 +444,16 @@ export default function App() {
     return (
       <>
         <Toaster position="top-right" />
-        <AdminDashboard
-          onLogout={handleLogout}
-          siteImages={siteImages}
-          setSiteImages={setSiteImages}
-          refreshSiteContent={fetchSiteContent}
-          refreshGallery={fetchGallery}
-          userEmail={userEmail}
-        />
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Abrindo painel...</div>}>
+          <AdminDashboard
+            onLogout={handleLogout}
+            siteImages={siteImages}
+            setSiteImages={setSiteImages}
+            refreshSiteContent={fetchSiteContent}
+            refreshGallery={fetchGallery}
+            userEmail={userEmail}
+          />
+        </Suspense>
       </>
     );
   }
@@ -1231,16 +1233,24 @@ export default function App() {
         </div>
       </footer>
 
-      <AdminLoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-        onLoginSuccess={() => setIsAdminLoggedIn(true)}
-      />
+      {isLoginModalOpen && (
+        <Suspense fallback={null}>
+          <AdminLoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+            onLoginSuccess={() => setIsAdminLoggedIn(true)}
+          />
+        </Suspense>
+      )}
 
-      <CatalogModal
-        isOpen={isCatalogModalOpen}
-        onClose={() => setIsCatalogModalOpen(false)}
-      />
+      {isCatalogModalOpen && (
+        <Suspense fallback={null}>
+          <CatalogModal
+            isOpen={isCatalogModalOpen}
+            onClose={() => setIsCatalogModalOpen(false)}
+          />
+        </Suspense>
+      )}
 
       {/* Floating WhatsApp Button */}
       <a
