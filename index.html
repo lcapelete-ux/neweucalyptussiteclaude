@@ -24,7 +24,7 @@
         // Carrega no primeiro sinal de interação do usuário...
         events.forEach(function (e) { w.addEventListener(e, loadGTM, { passive: true }); });
         // ...ou como garantia, alguns segundos após a página aparecer.
-        w.addEventListener('load', function () { setTimeout(loadGTM, 3500); });
+        w.addEventListener('load', function () { setTimeout(loadGTM, 10000); });
       })(window, document, 'script', 'dataLayer', 'GTM-PL4TFGKB');
     </script>
     <!-- End Google Tag Manager -->
@@ -83,7 +83,7 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div id="hero-poster" aria-hidden="true">
-      <img src="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=60&amp;w=800&amp;auto=format&amp;fit=crop" srcset="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=60&amp;w=480&amp;auto=format&amp;fit=crop 480w, https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=60&amp;w=800&amp;auto=format&amp;fit=crop 800w, https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=60&amp;w=1200&amp;auto=format&amp;fit=crop 1200w" sizes="100vw" fetchpriority="high" alt="">
+      <img src="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=50&amp;w=800&amp;auto=format&amp;fit=crop" srcset="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=50&amp;w=480&amp;auto=format&amp;fit=crop 480w, https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=50&amp;w=800&amp;auto=format&amp;fit=crop 800w, https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=50&amp;w=1200&amp;auto=format&amp;fit=crop 1200w" sizes="100vw" fetchpriority="high" alt="">
     </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
