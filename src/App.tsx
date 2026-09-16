@@ -120,7 +120,7 @@ const unsplashVariant = (source: string, width: number): string | null => {
   }
 };
 
-const optimizedStoredImage = (source: string) =>
+// Keep the CMS photo while serving a correctly encoded, lightweight copy.\nconst optimizedStoredImage = (source: string) =>
   source.includes("/site/1782393303287-7hfx4.webp")
     ? `${import.meta.env.BASE_URL}citriodora-optimized.webp`
     : source;
