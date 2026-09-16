@@ -22,9 +22,9 @@ import { motion, AnimatePresence } from "motion/react";
 const AdminDashboard = lazy(() => import("./components/AdminDashboard"));
 const AdminLoginModal = lazy(() => import("./components/AdminLoginModal"));
 const CatalogModal = lazy(() => import("./components/CatalogModal"));
-import { supabase } from "./supabase";
-
 import { Toaster, toast } from "react-hot-toast";
+
+const getSupabase = async () => (await import("./supabase")).supabase;
 
 export enum OperationType {
   CREATE = 'create',
@@ -214,7 +214,7 @@ export default function App() {
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState({ site: false, gallery: false });
 
-  // Visit Tracking
+  // Visit tracking is intentionally delayed so it never competes with the hero.
   useEffect(() => {
     const trackVisit = async () => {
       // Only track once per session to avoid noise
@@ -243,6 +243,7 @@ export default function App() {
           console.warn('Could not fetch geolocation or timeout reached', e);
         }
 
+        const supabase = await getSupabase();
         if (supabase) {
           await supabase.from('visits').insert([{
             user_agent: navigator.userAgent,
@@ -255,35 +256,60 @@ export default function App() {
       }
     };
 
-    trackVisit();
+    const timer = window.setTimeout(() => {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => void trackVisit(), { timeout: 4000 });
+      } else {
+        void trackVisit();
+      }
+    }, 5000);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
-  // Auth state listener
+  // Authentication is only needed for the restricted area, so initialize it
+  // after the public hero has painted.
   useEffect(() => {
-    if (!supabase) return;
+    let subscription: { unsubscribe: () => void } | undefined;
+    let cancelled = false;
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      const user = session?.user;
-      if (user && user.email !== 'fazendajt@gmail.com') {
-        supabase.auth.signOut();
-        setIsAdminLoggedIn(false);
-        setUserEmail(undefined);
-        toast.error("Acesso negado. Apenas o administrador autorizado pode acessar esta área.", {
-          id: "auth-denied"
-        });
-      } else {
-        setIsAdminLoggedIn(!!user);
-        setUserEmail(user?.email);
+    const initializeAuth = async () => {
+      const supabase = await getSupabase();
+      if (!supabase || cancelled) {
+        setIsAuthReady(true);
+        return;
       }
-      setIsAuthReady(true);
-    });
 
-    return () => subscription.unsubscribe();
+      const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+        const user = session?.user;
+        if (user && user.email !== 'fazendajt@gmail.com') {
+          void supabase.auth.signOut();
+          setIsAdminLoggedIn(false);
+          setUserEmail(undefined);
+          toast.error("Acesso negado. Apenas o administrador autorizado pode acessar esta área.", {
+            id: "auth-denied"
+          });
+        } else {
+          setIsAdminLoggedIn(!!user);
+          setUserEmail(user?.email);
+        }
+        setIsAuthReady(true);
+      });
+      subscription = data.subscription;
+    };
+
+    const timer = window.setTimeout(() => void initializeAuth(), 2500);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+      subscription?.unsubscribe();
+    };
   }, []);
 
   const fetchSiteContent = async () => {
     try {
       console.log("Fetching site content from Supabase...");
+      const supabase = await getSupabase();
       let docs: any[] = [];
 
       if (supabase) {
@@ -352,6 +378,7 @@ export default function App() {
   const fetchGallery = async () => {
     try {
       console.log("Fetching gallery from Supabase...");
+      const supabase = await getSupabase();
       let allItems: GalleryItem[] = [];
 
       if (supabase) {
@@ -407,8 +434,19 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchSiteContent();
-    fetchGallery();
+    const contentTimer = window.setTimeout(() => void fetchSiteContent(), 600);
+    const galleryTimer = window.setTimeout(() => {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => void fetchGallery(), { timeout: 4000 });
+      } else {
+        void fetchGallery();
+      }
+    }, 2200);
+
+    return () => {
+      window.clearTimeout(contentTimer);
+      window.clearTimeout(galleryTimer);
+    };
   }, []);
 
   const [isPromoOpen, setIsPromoOpen] = useState(false);
@@ -432,6 +470,7 @@ export default function App() {
 
   const handleLogout = async () => {
     try {
+      const supabase = await getSupabase();
       if (supabase) {
         await supabase.auth.signOut();
       }
