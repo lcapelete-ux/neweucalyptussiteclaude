@@ -120,12 +120,20 @@ const unsplashVariant = (source: string, width: number): string | null => {
   }
 };
 
-const responsiveImage = (source: string, widths: number[]) => ({
-  src: unsplashVariant(source, widths[Math.min(1, widths.length - 1)]) ?? source,
-  srcSet: unsplashVariant(source, widths[0])
-    ? widths.map(width => `${unsplashVariant(source, width)} ${width}w`).join(", ")
-    : undefined,
-});
+const optimizedStoredImage = (source: string) =>
+  source.includes("/site/1782393303287-7hfx4.webp")
+    ? `${import.meta.env.BASE_URL}citriodora-optimized.webp`
+    : source;
+
+const responsiveImage = (source: string, widths: number[]) => {
+  const displaySource = optimizedStoredImage(source);
+  return {
+    src: unsplashVariant(displaySource, widths[Math.min(1, widths.length - 1)]) ?? displaySource,
+    srcSet: unsplashVariant(displaySource, widths[0])
+      ? widths.map(width => `${unsplashVariant(displaySource, width)} ${width}w`).join(", ")
+      : undefined,
+  };
+};
 
 const Logo = ({ className = "" }: { className?: string }) => (
   <div className={`flex items-center gap-3 ${className}`}>
