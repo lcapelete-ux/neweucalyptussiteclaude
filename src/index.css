@@ -25,3 +25,10 @@
   --color-stone-900: #212529;
   --color-stone-950: #1a1d20;
 }
+
+/* Skip layout and paint work for sections until they approach the viewport.
+   The elements remain available to search engines and motion observers. */
+main > section:not(:first-child) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 820px;
+}
