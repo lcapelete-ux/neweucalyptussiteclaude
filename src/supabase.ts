@@ -44,6 +44,7 @@ export const uploadImage = async (base64: string, path: string) => {
     .from('images')
     .upload(fullPath, blob, {
       contentType: 'image/webp',
+      cacheControl: '31536000',
       upsert: true
     });
 
