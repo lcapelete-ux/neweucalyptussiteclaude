@@ -111,7 +111,7 @@ const unsplashVariant = (source: string, width: number): string | null => {
     const url = new URL(source);
     if (url.hostname !== "images.unsplash.com") return null;
     url.searchParams.set("w", String(width));
-    url.searchParams.set("q", "70");
+    url.searchParams.set("q", "60");
     url.searchParams.set("auto", "format");
     url.searchParams.set("fit", "crop");
     return url.toString();
