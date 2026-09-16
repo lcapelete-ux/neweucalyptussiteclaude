@@ -93,9 +93,15 @@ export interface SiteImages {
   };
 }
 
+const HERO_IMAGE = `${import.meta.env.BASE_URL}hero-800.webp`;
+const HERO_IMAGE_480 = `${import.meta.env.BASE_URL}hero-480.webp`;
+const HERO_IMAGE_1200 = `${import.meta.env.BASE_URL}hero-1200.webp`;
+const CITRIODORA_IMAGE = `${import.meta.env.BASE_URL}citriodora-optimized.webp`;
+const CITRIODORA_IMAGE_480 = `${import.meta.env.BASE_URL}citriodora-480.webp`;
+
 const initialImages: SiteImages = {
-  hero: "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=2074&auto=format&fit=crop",
-  about: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2026&auto=format&fit=crop",
+  hero: HERO_IMAGE,
+  about: CITRIODORA_IMAGE,
   sust1: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=1964&auto=format&fit=crop",
   medicao: "https://images.unsplash.com/photo-1503387762-592dee58c160?q=80&w=2070&auto=format&fit=crop",
   gallery: {
@@ -121,13 +127,26 @@ const unsplashVariant = (source: string, width: number): string | null => {
 };
 
 // Keep the CMS photo while serving a correctly encoded, lightweight copy.
-const optimizedStoredImage = (source: string) =>
-  source.includes("/site/1782393303287-7hfx4.webp")
-    ? `${import.meta.env.BASE_URL}citriodora-optimized.webp`
-    : source;
+const optimizedStoredImage = (source: string) => {
+  if (source.includes("/site/1782393303287-7hfx4.webp")) return CITRIODORA_IMAGE;
+  if (source.includes("photo-1542273917363-3b1817f69a2d")) return HERO_IMAGE;
+  return source;
+};
 
 const responsiveImage = (source: string, widths: number[]) => {
   const displaySource = optimizedStoredImage(source);
+  if (displaySource === CITRIODORA_IMAGE) {
+    return {
+      src: CITRIODORA_IMAGE,
+      srcSet: `${CITRIODORA_IMAGE_480} 480w, ${CITRIODORA_IMAGE} 640w`,
+    };
+  }
+  if (displaySource === HERO_IMAGE) {
+    return {
+      src: HERO_IMAGE,
+      srcSet: `${HERO_IMAGE_480} 480w, ${HERO_IMAGE} 800w, ${HERO_IMAGE_1200} 1200w`,
+    };
+  }
   return {
     src: unsplashVariant(displaySource, widths[Math.min(1, widths.length - 1)]) ?? displaySource,
     srcSet: unsplashVariant(displaySource, widths[0])
@@ -654,9 +673,9 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             className="text-center max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
           >
             <span className="inline-block py-1 px-3 rounded-full bg-brand-500/20 text-brand-100 border border-brand-400/30 text-sm font-semibold tracking-wider mb-6 backdrop-blur-sm">
               QUALIDADE E CONFIABILIDADE DESDE 1992
