@@ -530,7 +530,7 @@ export default function App() {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
-    transition: { duration: 0.6 },
+    transition: { duration: 0.32, ease: "easeOut" },
   };
 
   return (
@@ -610,7 +610,7 @@ export default function App() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
             >
               <a
                 href="#sobre"
@@ -759,11 +759,11 @@ export default function App() {
                   <motion.li
                     key={index}
                     className="flex items-center gap-4 p-4 rounded-xl border border-transparent hover:border-brand-100 hover:bg-brand-50/50 transition-colors cursor-default"
-                    initial={{ opacity: 0, x: -30 }}
+                    initial={{ opacity: 0, x: -18 }}
                     whileInView={{
                       opacity: 1,
                       x: 0,
-                      transition: { type: "spring", stiffness: 100, damping: 15, delay: index * 0.1 }
+                      transition: { type: "spring", stiffness: 180, damping: 22, delay: index * 0.035 }
                     }}
                     viewport={{ once: true, margin: "-20px" }}
                     whileHover={{ scale: 1.02, x: 5 }}
@@ -785,7 +785,7 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.32, ease: "easeOut" }}
             >
               <img
                 {...responsiveImage(siteImages.about, [480, 800, 1200])}
@@ -854,10 +854,10 @@ export default function App() {
               <motion.div
                 key={index}
                 className="bg-white p-8 rounded-2xl shadow-sm border border-stone-200 hover:shadow-lg transition-shadow relative"
-                initial={{ opacity: 0, x: -50 }}
+                initial={{ opacity: 0, x: -24 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ type: "spring", stiffness: 80, damping: 15, delay: index * 0.15 }}
+                transition={{ type: "spring", stiffness: 160, damping: 22, delay: index * 0.05 }}
                 whileHover={{ y: -5, scale: 1.02 }}
               >
                 <div className="absolute -top-5 -left-5 w-10 h-10 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center font-bold text-lg border-4 border-stone-100">
@@ -935,7 +935,7 @@ export default function App() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
+                  transition={{ duration: 0.32, ease: "easeOut" }}
                 >
                   <div className="text-center mb-6">
                     <div className="text-sm font-bold text-[#365414] uppercase tracking-wider">
@@ -1013,10 +1013,10 @@ export default function App() {
             </motion.div>
             <motion.div
               className="w-full"
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 14 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.32, ease: "easeOut" }}
             >
               <img
                 {...responsiveImage(siteImages.sust1, [480, 800, 1200])}
@@ -1088,7 +1088,7 @@ export default function App() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                transition={{ duration: 0.28, delay: idx * 0.04, ease: "easeOut" }}
               >
                 <img
                   src={item.url}
@@ -1185,7 +1185,7 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.32, ease: "easeOut" }}
             >
               <form
                 className="space-y-6"
