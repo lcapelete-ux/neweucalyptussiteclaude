@@ -18,6 +18,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useState, useEffect, lazy, Suspense } from "react";
+import { motion, AnimatePresence } from "motion/react";
 const AdminDashboard = lazy(() => import("./components/AdminDashboard"));
 const AdminLoginModal = lazy(() => import("./components/AdminLoginModal"));
 const CatalogModal = lazy(() => import("./components/CatalogModal"));
@@ -144,13 +145,20 @@ const PromotionModal = ({ promo, onClose }: { promo: NonNullable<SiteImages['pro
   if (!promo.active || !promo.url) return null;
 
   return (
-    <div
+    <motion.div
       className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
       onClick={onClose}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
-      <div
+      <motion.div
         className="relative max-w-lg w-full bg-white rounded-2xl overflow-hidden shadow-2xl"
         onClick={(e) => e.stopPropagation()}
+        initial={{ scale: 0.9, y: 20, opacity: 0 }}
+        animate={{ scale: 1, y: 0, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
       >
         <button
           onClick={onClose}
@@ -158,7 +166,7 @@ const PromotionModal = ({ promo, onClose }: { promo: NonNullable<SiteImages['pro
         >
           <X className="w-5 h-5" />
         </button>
-        
+
         <div className="relative aspect-[4/5] w-full">
           <img
             src={promo.url}
@@ -190,8 +198,8 @@ const PromotionModal = ({ promo, onClose }: { promo: NonNullable<SiteImages['pro
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
@@ -222,7 +230,7 @@ export default function App() {
 
           const response = await fetch('https://ipapi.co/json/', { signal: controller.signal });
           clearTimeout(timeoutId);
-          
+
           if (response.ok) {
             const data = await response.json();
             regionData = {
@@ -283,7 +291,7 @@ export default function App() {
           .from('site_content')
           .select('*')
           .order('created_at', { ascending: false });
-        
+
         if (error) throw error;
         docs = data.map(d => ({
           ...d,
@@ -294,11 +302,11 @@ export default function App() {
         setIsDataLoaded(prev => ({ ...prev, site: true }));
         return;
       }
-      
+
       let latestImages: Partial<SiteImages> = {};
       const foundTypes = new Set();
       const foundActive = new Set();
-      
+
       const allContent = docs.map((data: any) => {
         const type = data.type as keyof SiteImages;
         const item = {
@@ -328,7 +336,7 @@ export default function App() {
         }
         return item;
       });
-      
+
       setSiteImages(prev => ({
         ...prev,
         ...latestImages,
@@ -350,7 +358,7 @@ export default function App() {
         const { data, error } = await supabase
           .from('gallery')
           .select('*');
-        
+
         if (error) throw error;
         allItems = data.map(d => ({
           ...d,
@@ -362,14 +370,14 @@ export default function App() {
         setIsDataLoaded(prev => ({ ...prev, gallery: true }));
         return;
       }
-      
+
       const newGallery = {
         rural: [] as GalleryItem[],
         civil: [] as GalleryItem[],
         paisagismo: [] as GalleryItem[],
         ideias: [] as GalleryItem[],
       };
-      
+
       allItems.sort((a: any, b: any) => {
         if (a.order !== b.order) return a.order - b.order;
         return b.createdAt.getTime() - a.createdAt.getTime();
@@ -451,14 +459,23 @@ export default function App() {
     );
   }
 
+  const fadeIn = {
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.6 },
+  };
+
   return (
     <div className="min-h-screen font-sans text-stone-800">
-      
+
+      <AnimatePresence>
         {isPromoOpen && siteImages.promotion && (
           <PromotionModal promo={siteImages.promotion} onClose={handleClosePromo} />
         )}
-      
-      
+      </AnimatePresence>
+
+
       <Toaster position="top-right" />
       {/* Navigation */}
       <nav className="fixed w-full z-50 bg-[#183e26]/95 backdrop-blur-md border-b border-[#183e26]">
@@ -519,45 +536,53 @@ export default function App() {
         </div>
 
         {/* Mobile menu */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-[#183e26] border-b border-[#183e26] px-4 pt-2 pb-4 space-y-1 shadow-lg">
-            <a
-              href="#sobre"
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 text-stone-200 hover:text-white font-medium"
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              className="md:hidden bg-[#183e26] border-b border-[#183e26] px-4 pt-2 pb-4 space-y-1 shadow-lg overflow-hidden"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25 }}
             >
-              Sobre
-            </a>
-            <a
-              href="#citriodora"
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 text-stone-200 hover:text-white font-medium"
-            >
-              Citriodora
-            </a>
-            <a
-              href="#processo"
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 text-stone-200 hover:text-white font-medium"
-            >
-              Processo
-            </a>
-            <a
-              href="#normas"
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 text-stone-200 hover:text-white font-medium"
-            >
-              Normas
-            </a>
-            <a
-              href="#contato"
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 text-[#A1C913] font-bold"
-            >
-              Orçamento
-            </a>
-          </div>
-        )}
+              <a
+                href="#sobre"
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-3 py-2 text-stone-200 hover:text-white font-medium"
+              >
+                Sobre
+              </a>
+              <a
+                href="#citriodora"
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-3 py-2 text-stone-200 hover:text-white font-medium"
+              >
+                Citriodora
+              </a>
+              <a
+                href="#processo"
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-3 py-2 text-stone-200 hover:text-white font-medium"
+              >
+                Processo
+              </a>
+              <a
+                href="#normas"
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-3 py-2 text-stone-200 hover:text-white font-medium"
+              >
+                Normas
+              </a>
+              <a
+                href="#contato"
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-3 py-2 text-[#A1C913] font-bold"
+              >
+                Orçamento
+              </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       <main id="main-content">
@@ -579,7 +604,12 @@ export default function App() {
         )}
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-3xl mx-auto">
+          <motion.div
+            className="text-center max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <span className="inline-block py-1 px-3 rounded-full bg-brand-500/20 text-brand-100 border border-brand-400/30 text-sm font-semibold tracking-wider mb-6 backdrop-blur-sm">
               QUALIDADE E CONFIABILIDADE DESDE 1992
             </span>
@@ -606,31 +636,31 @@ export default function App() {
                 Ver Catálogo
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Stats Section */}
       <section className="py-12 bg-[#183e26] text-brand-50 relative z-20 -mt-8 mx-4 md:mx-auto max-w-6xl rounded-2xl shadow-2xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-8">
-          <div className="text-center">
+          <motion.div className="text-center" {...fadeIn}>
             <div className="text-4xl font-black mb-2">30+ Anos</div>
             <div className="text-brand-200 font-medium">
               de experiência no mercado
             </div>
-          </div>
-          <div className="text-center">
+          </motion.div>
+          <motion.div className="text-center" {...fadeIn}>
             <div className="text-4xl font-black mb-2">10 Anos</div>
             <div className="text-brand-200 font-medium">
               de garantia nos produtos
             </div>
-          </div>
-          <div className="text-center">
+          </motion.div>
+          <motion.div className="text-center" {...fadeIn}>
             <div className="text-4xl font-black mb-2">100%</div>
             <div className="text-brand-200 font-medium">
               madeira de reflorestamento
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -638,7 +668,7 @@ export default function App() {
       <section id="citriodora" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
+            <motion.div {...fadeIn}>
               <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-6">
                 Por que trabalhamos com{" "}
                 <span className="text-[#365414]">Eucalyptus Citriodora</span>?
@@ -659,23 +689,36 @@ export default function App() {
                   "Densidade e resistência mecânica superiores",
                   "Ideal para uso em ambientes externos e rurais",
                 ].map((item, index) => (
-                  <li
+                  <motion.li
                     key={index}
                     className="flex items-center gap-4 p-4 rounded-xl border border-transparent hover:border-brand-100 hover:bg-brand-50/50 transition-colors cursor-default"
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{
+                      opacity: 1,
+                      x: 0,
+                      transition: { type: "spring", stiffness: 100, damping: 15, delay: index * 0.1 }
+                    }}
+                    viewport={{ once: true, margin: "-20px" }}
+                    whileHover={{ scale: 1.02, x: 5 }}
                   >
-                    <div 
+                    <motion.div
                       className="bg-brand-100 p-2 rounded-full flex-shrink-0"
+                      whileHover={{ rotate: 15, scale: 1.1 }}
                     >
                       <CheckCircle2 className="h-6 w-6 text-brand-600" />
-                    </div>
+                    </motion.div>
                     <span className="text-stone-700 font-medium text-lg">{item}</span>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
 
-            <div
+            <motion.div
               className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
               <img
                 {...responsiveImage(siteImages.about, [480, 800, 1200])}
@@ -696,7 +739,7 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -704,8 +747,9 @@ export default function App() {
       {/* Treatment Process */}
       <section id="processo" className="py-24 bg-stone-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
+          <motion.div
             className="text-center max-w-3xl mx-auto mb-16"
+            {...fadeIn}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-4">
               Processo de Tratamento em Autoclave
@@ -715,7 +759,7 @@ export default function App() {
               NBR 9480, garantindo máxima proteção contra cupins, fungos e
               umidade.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -740,9 +784,14 @@ export default function App() {
                 desc: "20 dias de repouso para fixação completa. Eucalipto tratado com 10 anos de garantia, pronto para uso.",
               },
             ].map((step, index) => (
-              <div
+              <motion.div
                 key={index}
                 className="bg-white p-8 rounded-2xl shadow-sm border border-stone-200 hover:shadow-lg transition-shadow relative"
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ type: "spring", stiffness: 80, damping: 15, delay: index * 0.15 }}
+                whileHover={{ y: -5, scale: 1.02 }}
               >
                 <div className="absolute -top-5 -left-5 w-10 h-10 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center font-bold text-lg border-4 border-stone-100">
                   {index + 1}
@@ -754,7 +803,7 @@ export default function App() {
                   {step.title}
                 </h3>
                 <p className="text-stone-600">{step.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -763,7 +812,7 @@ export default function App() {
       {/* Measurement Standards */}
       <section id="normas" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#183e26] rounded-3xl overflow-hidden shadow-2xl">
+          <motion.div className="bg-[#183e26] rounded-3xl overflow-hidden shadow-2xl" {...fadeIn}>
             <div className="grid grid-cols-1 lg:grid-cols-2">
               <div className="p-12 lg:p-16 flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-6">
@@ -814,8 +863,12 @@ export default function App() {
                     backgroundSize: "30px 30px",
                   }}
                 ></div>
-                <div
+                <motion.div
                   className="relative z-10 bg-white p-8 rounded-2xl shadow-xl w-full max-w-md"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
                 >
                   <div className="text-center mb-6">
                     <div className="text-sm font-bold text-[#365414] uppercase tracking-wider">
@@ -823,20 +876,20 @@ export default function App() {
                     </div>
                   </div>
                   <div className="relative aspect-video border-4 border-stone-200 rounded-2xl flex items-center justify-center bg-stone-50 overflow-hidden shadow-xl">
-                    <img 
+                    <img
                       {...responsiveImage(siteImages.medicao, [480, 800, 1200])}
                       sizes="(min-width: 1024px) 50vw, 100vw"
                       loading="lazy"
                       decoding="async"
-                      alt="Ilustração de Medição" 
+                      alt="Ilustração de Medição"
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
                     />
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -847,7 +900,7 @@ export default function App() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
+            <motion.div {...fadeIn}>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
                 Compromisso Ambiental
               </h2>
@@ -890,9 +943,13 @@ export default function App() {
                   </span>
                 </li>
               </ul>
-            </div>
-            <div
+            </motion.div>
+            <motion.div
               className="w-full"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
               <img
                 {...responsiveImage(siteImages.sust1, [480, 800, 1200])}
@@ -903,7 +960,7 @@ export default function App() {
                 className="rounded-3xl aspect-[16/10] w-full object-cover shadow-2xl"
                 referrerPolicy="no-referrer"
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -911,7 +968,7 @@ export default function App() {
       {/* Gallery Section */}
       <section id="galeria" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <motion.div className="text-center mb-12" {...fadeIn}>
             <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-4">
               Nossa Estrutura e Produtos
             </h2>
@@ -919,7 +976,7 @@ export default function App() {
               Conheça um pouco mais sobre o nosso processo de tratamento e a
               qualidade da madeira que entregamos.
             </p>
-          </div>
+          </motion.div>
 
           {/* Gallery Tabs Header Hint */}
           <div className="text-center mb-6">
@@ -958,9 +1015,13 @@ export default function App() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {siteImages.gallery[activeGalleryTab].map((item, idx) => (
-              <div
+              <motion.div
                 key={item.id}
                 className="relative aspect-square rounded-2xl overflow-hidden shadow-md group"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
               >
                 <img
                   src={item.url}
@@ -970,7 +1031,7 @@ export default function App() {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   referrerPolicy="no-referrer"
                 />
-              </div>
+              </motion.div>
             ))}
             {siteImages.gallery[activeGalleryTab].length === 0 && (
               <div className="col-span-full py-12 text-center text-stone-500">
@@ -985,7 +1046,7 @@ export default function App() {
       <section id="contato" className="py-24 bg-stone-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <div>
+            <motion.div {...fadeIn}>
               <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-6">
                 Solicite seu Orçamento
               </h2>
@@ -996,10 +1057,10 @@ export default function App() {
               </p>
 
               <div className="space-y-6 mb-10">
-                <a 
-                  href="https://wa.me/5515996854945" 
+                <a
+                  href="https://wa.me/5515996854945"
                   onClick={() => { if (typeof window !== "undefined" && (window as any).dataLayer) (window as any).dataLayer.push({ event: "whatsapp_click", source: "contact_section" }); }}
-                  target="_blank" 
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 group cursor-pointer"
                 >
@@ -1015,7 +1076,7 @@ export default function App() {
                     </div>
                   </div>
                 </a>
-                <a 
+                <a
                   href="mailto:vendas@eucalyptustratados.com.br"
                   className="flex items-center gap-4 group cursor-pointer"
                 >
@@ -1031,7 +1092,7 @@ export default function App() {
                     </div>
                   </div>
                 </a>
-                <a 
+                <a
                   href="https://maps.app.goo.gl/6pimRc4R7dyMVghZ7?g_st=ic"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -1050,14 +1111,18 @@ export default function App() {
                   </div>
                 </a>
               </div>
-            </div>
+            </motion.div>
 
-            <div
+            <motion.div
               className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-stone-100"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
-              <form 
-                className="space-y-6" 
-                action="https://formsubmit.co/madeiratratada@icloud.com" 
+              <form
+                className="space-y-6"
+                action="https://formsubmit.co/madeiratratada@icloud.com"
                 method="POST"
                 onSubmit={() => {
                   if (typeof window !== 'undefined' && (window as any).dataLayer) {
@@ -1069,7 +1134,7 @@ export default function App() {
                 <input type="hidden" name="_subject" value="Novo Orçamento pelo Site!" />
                 <input type="hidden" name="_template" value="table" />
                 <input type="hidden" name="_captcha" value="false" />
-                
+
                 <div>
                   <label
                     htmlFor="nome"
@@ -1159,7 +1224,7 @@ export default function App() {
                   Enviar Mensagem
                 </button>
               </form>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -1219,6 +1284,7 @@ export default function App() {
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:bg-[#128C7E] transition-all hover:scale-110 flex items-center justify-center group"
+        aria-label="Falar com um vendedor no WhatsApp"
         title="Falar com um vendedor"
       >
         <svg
@@ -1227,6 +1293,7 @@ export default function App() {
           height="24"
           fill="currentColor"
           className="w-6 h-6"
+          aria-hidden="true"
         >
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
         </svg>
