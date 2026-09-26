@@ -1201,6 +1201,7 @@ export default function App() {
                 <input type="hidden" name="_subject" value="Novo Orçamento pelo Site!" />
                 <input type="hidden" name="_template" value="table" />
                 <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_cc" value="contatoeucaliptotratado@gmail.com" />
 
                 <div>
                   <label
