@@ -1,0 +1,36 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/blog/madeira-tratada/:path*",
+      "destination": "https://eucalyptustratados.com.br/eucalipto-tratado/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/madeiras-para-construcao-civil-conheca-os-principais-tipos/:path*",
+      "destination": "https://eucalyptustratados.com.br/madeira-para-construcao-rural/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/madeira-autoclavada/:path*",
+      "destination": "https://eucalyptustratados.com.br/tratamento-em-autoclave/",
+      "permanent": true
+    },
+    {
+      "source": "/construcao-civil/:path*",
+      "destination": "https://eucalyptustratados.com.br/madeira-para-construcao-rural/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "new.eucalyptustratados.com.br"
+        }
+      ],
+      "destination": "https://eucalyptustratados.com.br/:path*",
+      "permanent": true
+    }
+  ]
+}
