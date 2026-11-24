@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eucalyptustratados.com.br/sitemap.xml

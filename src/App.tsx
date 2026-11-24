@@ -681,13 +681,11 @@ export default function App() {
               QUALIDADE E CONFIABILIDADE DESDE 1992
             </span>
             <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
-              Eucalyptus{" "}
-              <span className="text-brand-400">Tratados</span>
+              Eucalipto tratado em{" "}
+              <span className="text-brand-400">Laranjal Paulista</span>
             </h1>
             <p className="text-lg md:text-xl text-stone-200 mb-10 leading-relaxed">
-              O seu destino definitivo para madeira de eucalipto tratado de alta
-              qualidade, com foco na espécie Citriodora. Soluções duráveis e
-              sustentáveis, com tratamento CCA.
+              Eucalipto citriodora tratado em autoclave para cercas, postes, mourões e construção rural. Estamos em Laranjal Paulista, SP. Consulte medidas, disponibilidade e entrega.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
@@ -719,7 +717,7 @@ export default function App() {
           <motion.div className="text-center" {...fadeIn}>
             <div className="text-4xl font-black mb-2">10 Anos</div>
             <div className="text-brand-200 font-medium">
-              de garantia nos produtos
+              de garantia, conforme condições informadas no orçamento
             </div>
           </motion.div>
           <motion.div className="text-center" {...fadeIn}>
@@ -751,8 +749,8 @@ export default function App() {
                   "Fibras retorcidas que aumentam a resistência estrutural",
                   "Maior resistência a trincas e rachaduras",
                   "Melhor absorção do tratamento preservativo CCA",
-                  "Durabilidade superior a 20-30 anos, em contato com solo (Padrão ABNT, NBR 9480)",
-                  "Laudos de tratamento aprovado pelo IPT (Instituto de Pesquisas Tecnológicas)",
+                  "Proteção da madeira conforme a aplicação e a especificação do tratamento",
+                  "Consulte a equipe sobre ficha técnica e documentos disponíveis para o lote",
                   "Densidade e resistência mecânica superiores",
                   "Ideal para uso em ambientes externos e rurais",
                 ].map((item, index) => (
@@ -822,9 +820,7 @@ export default function App() {
               Processo de Tratamento em Autoclave
             </h2>
             <p className="text-lg text-stone-600">
-              Nosso processo de imunização segue rigorosamente as normas ABNT e
-              NBR 9480, garantindo máxima proteção contra cupins, fungos e
-              umidade.
+              O tratamento em autoclave ajuda a proteger a madeira contra agentes biológicos. A especificação deve considerar a espécie, as dimensões e o uso da peça.
             </p>
           </motion.div>
 
@@ -833,22 +829,22 @@ export default function App() {
               {
                 icon: <TreePine className="h-8 w-8 text-brand-600" />,
                 title: "Seleção e Preparo",
-                desc: "Eucalipto Citriodora selecionado de áreas certificadas. Madeira cortada sob medida e descascada artesanalmente.",
+                desc: "Trabalhamos com foco em eucalipto citriodora. Consulte medidas e disponibilidade com nossa equipe.",
               },
               {
                 icon: <Droplets className="h-8 w-8 text-brand-600" />,
                 title: "Secagem",
-                desc: "30 a 60 dias de secagem controlada ao ar livre para atingir o nível ideal de umidade antes do tratamento.",
+                desc: "O preparo da madeira depende das características de cada lote e da aplicação solicitada.",
               },
               {
                 icon: <ShieldCheck className="h-8 w-8 text-brand-600" />,
                 title: "Autoclave (Célula Cheia)",
-                desc: "Remoção do ar e umidade das células. Alta pressão de até 18 kg/cm² para injeção do preservativo CCA.",
+                desc: "O tratamento é feito em autoclave. Consulte a equipe sobre o processo e as especificações disponíveis para cada lote.",
               },
               {
                 icon: <CheckCircle2 className="h-8 w-8 text-brand-600" />,
                 title: "Fixação e Garantia",
-                desc: "20 dias de repouso para fixação completa. Eucalipto tratado com 10 anos de garantia, pronto para uso.",
+                desc: "Consulte as condições de uso, instalação e garantia informadas para cada produto no orçamento.",
               },
             ].map((step, index) => (
               <motion.div
@@ -885,12 +881,11 @@ export default function App() {
                 <div className="flex items-center gap-3 mb-6">
                   <Ruler className="h-8 w-8 text-brand-400" />
                   <h2 className="text-3xl font-bold text-white">
-                    Padrão ABNT NBR 9480
+                    Como conferir as medidas
                   </h2>
                 </div>
                 <p className="text-brand-100 text-lg mb-8 leading-relaxed">
-                  Todas as nossas medidas seguem rigorosamente a norma ABNT NBR
-                  9480 para medição de postes de madeira.
+                  Para comparar postes, confira o comprimento e o diâmetro informados no orçamento. Confirme com nossa equipe o padrão de medição usado para cada peça.
                 </p>
                 <div className="space-y-6">
                   <div className="bg-black/20 p-6 rounded-xl border border-white/10">
@@ -898,8 +893,7 @@ export default function App() {
                       Medição pelo Topo
                     </h3>
                     <p className="text-brand-200 text-sm">
-                      Esta é a medida de venda. Sempre medimos pelo diâmetro da
-                      ponta mais fina do poste (topo), seguindo a NBR 9480.
+                      Antes de comparar preços, confirme se o diâmetro indicado se refere ao topo ou à base da peça.
                     </p>
                   </div>
                   <div className="bg-black/20 p-6 rounded-xl border border-white/10">
@@ -913,10 +907,10 @@ export default function App() {
                   </div>
                   <div className="bg-black/20 p-6 rounded-xl border border-white/10">
                     <h3 className="text-white font-bold mb-2">
-                      Laudos IPT
+                      Documentação disponível
                     </h3>
                     <p className="text-brand-200 text-sm">
-                      Nossos laudos de tratamento são aprovados pelo IPT (Instituto de Pesquisas Tecnológicas), garantindo a eficácia da imunização.
+                      Solicite à equipe a ficha técnica e os documentos disponíveis para o lote.
                     </p>
                   </div>
                 </div>
@@ -972,8 +966,7 @@ export default function App() {
                 Compromisso Ambiental
               </h2>
               <p className="text-brand-100 text-lg mb-8">
-                Toda nossa madeira é proveniente de áreas de reflorestamento
-                certificadas, contribuindo para a preservação do meio ambiente.
+                Trabalhamos com madeira de eucalipto proveniente de reflorestamento. Consulte a equipe sobre a origem do lote disponível.
               </p>
               <ul className="space-y-4">
                 <li className="flex items-center gap-3">
@@ -981,7 +974,7 @@ export default function App() {
                     <CheckCircle2 className="h-5 w-5 text-white" />
                   </div>
                   <span className="font-medium">
-                    Madeira 100% de áreas de reflorestamento certificadas
+                    Madeira de reflorestamento, conforme disponibilidade do lote
                   </span>
                 </li>
                 <li className="flex items-center gap-3">
@@ -998,7 +991,7 @@ export default function App() {
                     <CheckCircle2 className="h-5 w-5 text-white" />
                   </div>
                   <span className="font-medium">
-                    Retira e retém dióxido de carbono da atmosfera
+                    Consulte as informações de origem do lote com nossa equipe
                   </span>
                 </li>
                 <li className="flex items-center gap-3">
